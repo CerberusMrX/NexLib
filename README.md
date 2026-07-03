@@ -5,7 +5,6 @@
 
 NexLib is a production-grade, industry-level Library Management System — completed and released by Sudeepa Wanigarathna. It includes a robust PHP backend, a tested MySQL schema, JWT authentication, and a polished front-end for both users and administrators.
 
---
 
 ## Table of contents
 - [Features](#features)
@@ -40,7 +39,7 @@ Below are screenshots of the Library Management System.
       <b>📊 Dashboard</b>
     </td>
     <td align="center">
-      <img src="assets/img/B.PNG" alt="Manage Books" width="450"><br>
+      <img src="assets/img/b.PNG" alt="Manage Books" width="450"><br>
       <b>📚 Manage Books</b>
     </td>
   </tr>
