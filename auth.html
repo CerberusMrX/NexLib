@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NexLib | Authentication</title>
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+
+<body class="hero">
+    <div class="glass modal-content">
+        <h2 id="auth-title" style="margin-bottom: 2rem; text-align: center;">Welcome Back</h2>
+
+        <form id="auth-form">
+            <div class="form-group" id="name-group" style="display: none;">
+                <label>Full Name</label>
+                <input type="text" id="name" placeholder="Kasun Perera">
+            </div>
+            <div class="form-group">
+                <label>Email Address</label>
+                <input type="email" id="email" required placeholder="kasun@example.com">
+            </div>
+            <div class="form-group">
+                <label>Password</label>
+                <input type="password" id="password" required placeholder="••••••••">
+            </div>
+            <div class="form-group" style="display: none;">
+                <!-- Role selector securely removed per requirements -->
+            </div>
+            <button type="submit" class="btn-primary" style="width: 100%; margin-top: 1rem;">Login</button>
+        </form>
+
+        <p id="auth-toggle"
+            style="margin-top: 2rem; text-align: center; color: var(--text-secondary); cursor: pointer; font-size: 0.95rem; display: block;">
+            Don't have an account? <span style="color: var(--primary); font-weight: 600;">Register here</span>
+        </p>
+        <div style="margin-top: 1.5rem; text-align: center; border-top: 1px solid var(--glass-border); padding-top: 1.5rem;">
+            <a href="admin-auth.html" style="color: var(--text-secondary); font-size: 0.85rem; text-decoration: none; opacity: 0.8; transition: opacity 0.2s;">
+                <svg style="width: 14px; height: 14px; display: inline-block; vertical-align: middle; margin-right: 4px;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg>
+                Admin Portal
+            </a>
+        </div>
+    </div>
+
+    <script src="assets/js/api.js"></script>
+    <script>
+        const form = document.getElementById('auth-form');
+        const authTitle = document.getElementById('auth-title');
+        const authToggle = document.getElementById('auth-toggle');
+        const nameGroup = document.getElementById('name-group');
+        const submitBtn = form.querySelector('button');
+
+        let isLogin = true;
+
+        function toggleAuth() {
+            isLogin = !isLogin;
+            authTitle.innerText = isLogin ? 'Welcome Back' : 'Create Account';
+            nameGroup.style.display = isLogin ? 'none' : 'block';
+            submitBtn.innerText = isLogin ? 'Login' : 'Register';
+            authToggle.innerHTML = isLogin ?
+                'Don\'t have an account? <span style="color: var(--primary);">Register here</span>' :
+                'Already have an account? <span style="color: var(--primary);">Login here</span>';
+        }
+
+        authToggle.addEventListener('click', toggleAuth);
+
+        // Check URL for initial mode
+        const urlParams = new URLSearchParams(window.location.search);
+        if (urlParams.get('mode') === 'register') toggleAuth();
+
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const data = {
+                email: document.getElementById('email').value,
+                password: document.getElementById('password').value
+            };
+
+            if (!isLogin) {
+                data.name = document.getElementById('name').value;
+            }
+
+            const endpoint = isLogin ? 'login' : 'register';
+            try {
+                const response = await API.post(endpoint, data);
+                if (isLogin) {
+                    localStorage.setItem('token', response.token);
+                    localStorage.setItem('user', JSON.stringify(response.user));
+                    window.location.href = 'dashboard.html';
+                } else {
+                    alert('Registration successful! Please login.');
+                    toggleAuth();
+                }
+            } catch (error) {
+                alert(error.message || 'Authentication failed');
+            }
+        });
+    </script>
+</body>
+
+</html>

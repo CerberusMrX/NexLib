@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NexLib | Modern Library Management</title>
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <nav style="position: absolute; width: 100%; padding: 2rem; display: flex; justify-content: space-between; align-items: center;">
+        <div class="logo" style="font-size: 1.5rem; font-weight: 700; color: var(--primary);">NexLib</div>
+        <div class="nav-links">
+            <a href="auth.html" class="btn-outline" style="text-decoration: none; padding: 0.5rem 1rem; margin-right: 1rem;">Login</a>
+            <a href="auth.html?mode=register" class="btn-primary" style="text-decoration: none; padding: 0.5rem 1rem;">Get Started</a>
+        </div>
+    </nav>
+
+    <div class="hero">
+        <div class="glass" style="padding: 4rem; max-width: 800px;">
+            <h1>Digital Library, <br>Simplified.</h1>
+            <p>Manage books, track borrowings, and calculate fines with our beautiful, intuitive, and modern management system.</p>
+            <div class="actions">
+                <a href="auth.html?mode=register" class="btn-primary" style="text-decoration: none; font-size: 1.1rem; padding: 1rem 2rem;">Explore Now</a>
+            </div>
+        </div>
+    </div>
+
+    <footer style="text-align: center; padding: 2rem; color: var(--text-secondary);">
+        &copy; 2026 NexLib Systems. Built for the modern age.
+    </footer>
+
+    <script>
+        // Check if already logged in
+        if (localStorage.getItem('token')) {
+            window.location.href = 'dashboard.html';
+        }
+    </script>
+</body>
+</html>

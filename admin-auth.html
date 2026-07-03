@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NexLib | Admin Portal</title>
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+
+<body class="hero admin-hero">
+    <div class="glass modal-content admin-glass" style="border-top: 4px solid var(--danger);">
+        <div style="text-align: center; margin-bottom: 2rem;">
+            <div class="logo" style="font-size: 1.5rem; font-weight: 700; color: var(--danger); margin-bottom: 0.5rem;">NexLib <span style="color: var(--text-primary); font-weight: 400;">Admin</span></div>
+            <h2 id="auth-title">Secure Portal</h2>
+            <p style="color: var(--text-secondary); font-size: 0.9rem; margin-top: 0.5rem;">Authorized personnel only</p>
+        </div>
+
+        <form id="auth-form">
+            <div class="form-group">
+                <label>Administrator Email</label>
+                <input type="email" id="email" required placeholder="admin@nexlib.lk" style="border-color: rgba(239, 68, 68, 0.3);">
+            </div>
+            <div class="form-group">
+                <label>Password</label>
+                <input type="password" id="password" required placeholder="••••••••" style="border-color: rgba(239, 68, 68, 0.3);">
+            </div>
+            <button type="submit" class="btn-primary" style="width: 100%; margin-top: 1rem; background: var(--danger);">Authenticate</button>
+        </form>
+
+        <p style="margin-top: 1.5rem; text-align: center; color: var(--text-secondary); font-size: 0.9rem;">
+            <a href="auth.html" style="color: var(--text-secondary); text-decoration: none; border-bottom: 1px dotted var(--text-secondary);">Return to User Portal</a>
+        </p>
+    </div>
+
+    <script src="assets/js/api.js"></script>
+    <script>
+        const form = document.getElementById('auth-form');
+
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const data = {
+                email: document.getElementById('email').value,
+                password: document.getElementById('password').value
+            };
+
+            try {
+                const response = await API.post('login', data);
+                if (response.user.role !== 'admin') {
+                    alert('Access Denied. This portal is for administrators only.');
+                    return;
+                }
+                localStorage.setItem('token', response.token);
+                localStorage.setItem('user', JSON.stringify(response.user));
+                window.location.href = 'dashboard.html';
+            } catch (error) {
+                alert(error.message || 'Authentication failed');
+            }
+        });
+    </script>
+</body>
+
+</html>
